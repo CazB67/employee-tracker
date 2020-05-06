@@ -55,6 +55,7 @@ function addDepartment() {
 
 function addRole(){
     connection.query("SELECT * FROM department", function(err, results) {
+        console.log(results);
         inquirer.prompt ([
             {
                 type: "input",
@@ -70,8 +71,14 @@ function addRole(){
                 type: "rawlist",
                 name: "departmentId",
                 message: "Add department",
-                choices: results.map(response => response.name),
-                askAnswered: true
+                choices: function() {
+                            var choiceArray = [];
+                            for (var i = 0; i < results.length; i++) {
+                                choiceArray.push({name: results[i].name, value: results[i].id});
+                            }
+                            return choiceArray;
+                        }
+            
         }
         ]).then(response => {
             connection.query(`INSERT INTO role (title, salary, department_id) VALUES ("${response.title}", "${response.salary}", "${response.departmentId}")`, 

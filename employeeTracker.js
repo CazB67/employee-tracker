@@ -34,6 +34,10 @@ function start() {
             addDepartment();    
         }else if (answer.choice === 'Add Role') {
             addRole();    
+        }else if (answer.choice === 'Remove Employee') {
+            removeEmployee();   
+        }else if (answer.choice === 'View all Employees') {
+            viewEmployees(); 
         }
     })
 }
@@ -81,7 +85,10 @@ function addRole(){
 }
 
 function addEmployee() {
-    connection.query("SELECT * FROM employee", function(err, results2) {
+    let employees;
+    connection.query("SELECT * FROM employee", function(err, results) {
+        employees = results;
+    })
     connection.query('SELECT role.id as roleID, role.title as roleTitle FROM role', function (error, results, fields){
     inquirer.prompt ([
         {
@@ -101,20 +108,42 @@ function addEmployee() {
             choices: results.map(roleDetails => ({value: roleDetails.roleID, name: roleDetails.roleTitle }))
         },
         {
-                
+            type: "rawlist",
+            name: "queryManager",
+            message: "Do this employee have a manager?",
+            choices: ['Yes', 'No']
+        },
+        {
             type: "rawlist",
             name: "manager",
             message: "Who is the employee's manager?",
-            choices: results2.map(employeepDetails => ({value: employeepDetails.id, name: employeepDetails.first_name }))
+            choices:  employees.map(employeepDetails => ({value: employeepDetails.id, name: employeepDetails.first_name })),
+            when: function(response){
+                    return(response.queryManager === 'Yes')
+                  }
         }
     ]).then(response => {
-        connection.query(`INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES ("${response.firstName}", "${response.lastName}", "${response.role}", "${response.manager}")`, 
+        if(response.queryManager === "No"){
+            connection.query(`INSERT INTO employee (first_name, last_name, role_id) VALUES ("${response.firstName}", "${response.lastName}", "${response.role}")`, 
             function (err, res){
                 start();
             });
-        })
-        })
+        }else{
+            connection.query(`INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES ("${response.firstName}", "${response.lastName}", "${response.role}", "${response.manager}")`, 
+            function (err, res){
+                start();
+            });
+        }
+        }) 
 })
+}
+
+function removeEmployee() {
+
+}
+
+function viewEmployees() {
+    
 }
 
 

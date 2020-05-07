@@ -89,7 +89,7 @@ function addEmployee() {
     connection.query("SELECT * FROM employee", function(err, results) {
         employees = results;
     })
-    connection.query('SELECT role.id as roleID, role.title as roleTitle FROM role', function (error, results, fields){
+    connection.query('SELECT * FROM role', function (error, results, fields){
     inquirer.prompt ([
         {
             type: "input",
@@ -105,7 +105,7 @@ function addEmployee() {
             type: "rawlist",
             name: "role",
             message: "What's the employee's role?",
-            choices: results.map(roleDetails => ({value: roleDetails.roleID, name: roleDetails.roleTitle }))
+            choices: results.map(roleDetails => ({value: roleDetails.id, name: roleDetails.title }))
         },
         {
             type: "rawlist",
@@ -117,7 +117,7 @@ function addEmployee() {
             type: "rawlist",
             name: "manager",
             message: "Who is the employee's manager?",
-            choices:  employees.map(employeepDetails => ({value: employeepDetails.id, name: employeepDetails.first_name })),
+            choices:  employees.map(employeeDetails => ({value: employeeDetails.id, name: employeeDetails.first_name })),
             when: function(response){
                     return(response.queryManager === 'Yes')
                   }
@@ -135,15 +135,22 @@ function addEmployee() {
             });
         }
         }) 
-})
+    })
 }
 
 function removeEmployee() {
-
+    if(response.firstName === employee.first_name) {
+        connection.query("DELETE FROM employee where first_name = '${response.firstName}'", function(err, results) {
+            start();
+        })
+    }
 }
 
 function viewEmployees() {
-    
+    connection.query("SELECT * FROM employee", function(err, results) {
+        console.table(results);
+        start();
+    })
 }
 
 

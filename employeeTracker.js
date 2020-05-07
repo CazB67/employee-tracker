@@ -47,15 +47,13 @@ function addDepartment() {
     ]).then(response => {
         connection.query(`INSERT INTO department (name) VALUES ("${response.departmentName}")`, 
             function (err, res){
-                console.log(err);
-                console.log(res);
+                start();
             });
-    })
+    }) 
 }
 
 function addRole(){
     connection.query("SELECT * FROM department", function(err, results) {
-        console.log(results);
         inquirer.prompt ([
             {
                 type: "input",
@@ -71,28 +69,20 @@ function addRole(){
                 type: "rawlist",
                 name: "departmentId",
                 message: "Add department",
-                choices: function() {
-                            var choiceArray = [];
-                            for (var i = 0; i < results.length; i++) {
-                                choiceArray.push({name: results[i].name, value: results[i].id});
-                            }
-                            return choiceArray;
-                        }
-            
-        }
+                choices: results.map(departmentDetails => ({value: departmentDetails.id, name: departmentDetails.name}))
+            }
         ]).then(response => {
             connection.query(`INSERT INTO role (title, salary, department_id) VALUES ("${response.title}", "${response.salary}", "${response.departmentId}")`, 
                 function (err, res){
-                    console.log(err);
-                    console.log(res);
+                    start();
                 });
         })
      })
 }
 
 function addEmployee() {
-    connection.query('SELECT * FROM role', function (error, results, fields){
-        console.log(results);
+    connection.query("SELECT * FROM employee", function(err, results2) {
+    connection.query('SELECT role.id as roleID, role.title as roleTitle FROM role', function (error, results, fields){
     inquirer.prompt ([
         {
             type: "input",
@@ -105,25 +95,27 @@ function addEmployee() {
             message: "What's the employee's last name?"
         },
         {
-            type: "input",
+            type: "rawlist",
             name: "role",
             message: "What's the employee's role?",
-            choices: results.map(response => response.name),
-            askAnswered: true
+            choices: results.map(roleDetails => ({value: roleDetails.roleID, name: roleDetails.roleTitle }))
         },
         {
-            type: "input",
+                
+            type: "rawlist",
             name: "manager",
-            message: "Who is the employee's manager?"
-        },
+            message: "Who is the employee's manager?",
+            choices: results2.map(employeepDetails => ({value: employeepDetails.id, name: employeepDetails.first_name }))
+        }
     ]).then(response => {
-        connection.query(`INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES ("${response.firstName}", "${response.lastname}", "${response.role}", "${response.manager}")`, 
+        connection.query(`INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES ("${response.firstName}", "${response.lastName}", "${response.role}", "${response.manager}")`, 
             function (err, res){
-                console.log(err);
-                console.log(res);
+                start();
             });
-    })
+        })
+        })
 })
 }
+
 
 

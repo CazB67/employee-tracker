@@ -231,5 +231,22 @@ function removeDepartment() {
     })
 }
 
+function removeRole() {
+    connection.query("SELECT * FROM role", function(err, results) {
+        inquirer.prompt ([
+            {
+                type: "rawlist",
+                name: "remove",
+                message: "Which role do you want to remove?", 
+                choices: results.map(roleDetails => ({value: roleDetails.id, name: roleDetails.title})),
+            }
+        ]).then(response => {
+            connection.query(`DELETE FROM role where id = ('${response.remove}')`, function(err, results) {
+                    start();
+            });
+        })
+    })
+}
+
 
 

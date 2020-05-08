@@ -27,7 +27,7 @@ The URL of the git hub repository is https://github.com/CazB67/note-taker
 
 To run the interface from the terminal type 
 
-`node employee_Tracker.js`
+`node employeeTracker.js`
 
 
 The following GIF shows the application's functionality and how to use. 

@@ -167,7 +167,7 @@ function removeEmployee() {
 }
 
 function viewEmployees() {
-    connection.query("SELECT employee.id, employee.first_name, employee.last_name, role.title as role_title, role.salary, department.name as department_name, employee.manager_id FROM employee INNER JOIN role ON employee.role_id = role.id INNER JOIN department ON department.id = role.department_id", function(err, results) {
+    connection.query("SELECT employee.id, employee.first_name, employee.last_name, role.title as role_title, role.salary, department.name as department_name, employee.manager_id,  concat(B.first_name, \" \", B.last_name) as manager_name FROM employee INNER JOIN role ON employee.role_id = role.id INNER JOIN department ON department.id = role.department_id LEFT JOIN employee B on employee.manager_id = B.id", function(err, results) {
         console.table(results);
         start();
     })
@@ -185,6 +185,33 @@ function viewRoles() {
         console.table(results);
         start();
     })
+}
+
+function updateEmployeeRole() {
+    let updateRole;
+    connection.query("SELECT * FROM role", function(err, results) {
+        updateRole = results;
+    connection.query("SELECT * FROM employee", function(err, results) {
+        inquirer.prompt ([
+            {
+                type: "rawlist",
+                name: "selectEmployee",
+                message: "Which employee do you want to update?", 
+                choices: results.map(employeeDetails => ({value: employeeDetails.id, name: employeeDetails.first_name + " " + employeeDetails.last_name})),
+            },
+            {
+                type: "rawlist",
+                name: "newRole",
+                message: "What is their new role?", 
+                choices: updateRole.map(roleDetails => ({value: roleDetails.id, name: roleDetails.title }))
+            }
+        ]).then(response => {
+            connection.query(`UPDATE employee SET employee.role_id = ('${response.newRole}') where employee.id = ('${response.selectEmployee}')`, function(err, results) {
+                    start();
+            });
+            })
+        })
+})
 }
 
 

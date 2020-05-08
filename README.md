@@ -23,7 +23,7 @@ The task was to create a Content Management System that would allow non-develope
 5. Testing functionality and cleaning code throughout.
 
 ## Usage
-The URL of the git hub repository is https://github.com/CazB67/note-taker
+The URL of the git hub repository is https://github.com/CazB67/employee-tracker
 
 To run the interface from the terminal type 
 

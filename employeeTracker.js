@@ -23,21 +23,33 @@ function start() {
             type: "list",
             name: "choice",
             message: "What would you like to do?",
-            choices: ['Add Employee', 'View all Employees', 'View all Employees by Department', 'View all Employees by Manager', 'Remove Employee', 'Update Employee', 'Update Employee Manager', 'Add Department', 'Add Role']
+            choices: ['Add Employee', 'Add Department', 'Add Role', 'View all Employees', 'View all Departments', 'View all Roles', 'Remove Employee', 'Remove Department', 'Remove Role', 'Update Employee Role', 'Update Employee Manager', 'View total utilised budget of a department'  ]
         }
     ]).then(answer => {
         if (answer.choice === 'Add Employee') {
             addEmployee();
-        } else if (answer.choice === 'View all Employees') {
-            viewEmployees();    
         }else if (answer.choice === 'Add Department') {
             addDepartment();    
         }else if (answer.choice === 'Add Role') {
             addRole();    
-        }else if (answer.choice === 'Remove Employee') {
-            removeEmployee();   
         }else if (answer.choice === 'View all Employees') {
             viewEmployees(); 
+        }else if (answer.choice === 'View all Departments') {
+            viewDepartments();   
+        }else if (answer.choice === 'View all Roles') {
+            viewRoles();   
+        }else if (answer.choice === 'Remove Employee') {
+            removeEmployee();   
+        }else if (answer.choice === 'Remove Department') {
+            removeDepartment();   
+        }else if (answer.choice === 'Remove Role') {
+            removeRole();   
+        }else if (answer.choice === 'Update Employee Role') {
+            updateEmployeeRole();   
+        }else if (answer.choice === 'Update Employee Manager') {
+            updateEmployeeManager();   
+        }else if (answer.choice === 'View total utilised budget of a department') {
+            viewDepartmentBudget();   
         }
     })
 }

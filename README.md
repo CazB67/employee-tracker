@@ -2,7 +2,7 @@
 Using Node, Inquirer, and MySQL.
 
 ## Description 
-![Last Commit](https://img.shields.io/github/last-commit/cazb67/note-taker) ![Top Language](https://img.shields.io/github/languages/top/cazb67/note-taker)
+![Last Commit](https://img.shields.io/github/last-commit/cazb67/employee-tracker) ![Top Language](https://img.shields.io/github/languages/top/cazb67/employee-tracker)
 
 The task was to create a Content Management System that would allow non-developers to view and interact with information stored in a database. Using node, inquirer and MySql a solution for managing a company's employee was built.
 

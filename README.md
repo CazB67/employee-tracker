@@ -32,7 +32,7 @@ To run the interface from the terminal type
 
 The following GIF shows the application's functionality and how to use. 
 
-<img src="note-taker.gif" width="450" height="300" title="Note-Taker APP">
+<img src="employee-tracker.gif" width="450" height="300" title="Employee Tracker Interface">
 
 ## Technologies
 NPM, Node js, Inquirer, mySQL
@@ -45,4 +45,4 @@ NPM, Node js, Inquirer, mySQL
 [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-v2.0%20adopted-ff69b4.svg)](code_of_conduct.md)
 
 ## License
-![License](https://img.shields.io/github/license/cazb67/employee-summary)  
+![License](https://img.shields.io/github/license/cazb67/employee-tracker)  

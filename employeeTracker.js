@@ -83,12 +83,15 @@ function addRole(){
         })
      })
 }
-
-function addEmployee() {
+async function addEmployee() {
     let employees;
     connection.query("SELECT * FROM employee", function(err, results) {
         employees = results;
     })
+    
+    const employeess = await connection.query("SELECT * FROM employee");
+    //console.table(employeess);
+    
     connection.query('SELECT * FROM role', function (error, results, fields){
     inquirer.prompt ([
         {
@@ -139,11 +142,20 @@ function addEmployee() {
 }
 
 function removeEmployee() {
-    if(response.firstName === employee.first_name) {
-        connection.query("DELETE FROM employee where first_name = '${response.firstName}'", function(err, results) {
-            start();
+    connection.query("SELECT * FROM employee", function(err, results) {
+        inquirer.prompt ([
+            {
+                type: "rawlist",
+                name: "id",
+                message: "Which employee do you want to remove?", 
+                choices: results.map(employeeDetails => ({value: employeeDetails.id, name: employeeDetails.first_name + " " + employeeDetails.last_name})),
+            }
+        ]).then(response => {
+            connection.query(`DELETE FROM employee where id = ('${response.id}')`, function(err, results) {
+                    start();
+            });
         })
-    }
+    })
 }
 
 function viewEmployees() {

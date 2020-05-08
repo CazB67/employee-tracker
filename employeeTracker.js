@@ -53,6 +53,7 @@ function start() {
         }
     })
 }
+
 function addDepartment() {
     inquirer.prompt ([
         {
@@ -95,6 +96,7 @@ function addRole(){
         })
      })
 }
+
 function addEmployee() {
     let employees;
     connection.query("SELECT * FROM employee", function(err, results) {

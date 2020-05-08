@@ -197,6 +197,29 @@ function updateEmployeeRole() {
     })
 }
 
+function updateEmployeeManager() {
+    connection.query("SELECT * FROM employee", function(err, results) {
+        inquirer.prompt ([
+            {
+                type: "rawlist",
+                name: "selectEmployee",
+                message: "Which employee do you want to update?", 
+                choices: results.map(employeeDetails => ({value: employeeDetails.id, name: employeeDetails.first_name + " " + employeeDetails.last_name})),
+            },
+            {
+                type: "rawlist",
+                name: "newManager",
+                message: "Who is their new manager?", 
+                choices: results.map(managerDetails => ({value: managerDetails.id, name: managerDetails.first_name + " " + managerDetails.last_name }))
+            }
+        ]).then(response => {
+            connection.query(`UPDATE employee SET employee.manager_id = ('${response.newManager}') where employee.id = ('${response.selectEmployee}')`, function(err, results) {
+                    start();
+            });
+            })
+        })
+}
+
 function removeEmployee() {
     connection.query("SELECT * FROM employee", function(err, results) {
         inquirer.prompt ([

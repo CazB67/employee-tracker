@@ -95,15 +95,11 @@ function addRole(){
         })
      })
 }
-async function addEmployee() {
+function addEmployee() {
     let employees;
     connection.query("SELECT * FROM employee", function(err, results) {
         employees = results;
     })
-    
-    const employeess = await connection.query("SELECT * FROM employee");
-    //console.table(employeess);
-    
     connection.query('SELECT * FROM role', function (error, results, fields){
     inquirer.prompt ([
         {
@@ -132,7 +128,7 @@ async function addEmployee() {
             type: "rawlist",
             name: "manager",
             message: "Who is the employee's manager?",
-            choices:  employees.map(employeeDetails => ({value: employeeDetails.id, name: employeeDetails.first_name })),
+            choices:  employees.map(employeeDetails => ({value: employeeDetails.id, name: employeeDetails.first_name + " " + employeeDetails.last_name })),
             when: function(response){
                     return(response.queryManager === 'Yes')
                   }
@@ -171,11 +167,27 @@ function removeEmployee() {
 }
 
 function viewEmployees() {
-    connection.query("SELECT * FROM employee", function(err, results) {
+    connection.query("SELECT employee.id, employee.first_name, employee.last_name, role.title as role_title, role.salary, department.name as department_name, employee.manager_id FROM employee INNER JOIN role ON employee.role_id = role.id INNER JOIN department ON department.id = role.department_id", function(err, results) {
         console.table(results);
         start();
     })
 }
+
+function viewDepartments() {
+    connection.query("SELECT * FROM department", function(err, results) {
+        console.table(results);
+        start();
+    })
+}
+
+function viewRoles() {
+    connection.query("SELECT * FROM role", function(err, results) {
+        console.table(results);
+        start();
+    })
+}
+
+
 
 
 

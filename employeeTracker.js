@@ -248,5 +248,24 @@ function removeRole() {
     })
 }
 
+function viewDepartmentBudget() {
+    connection.query("SELECT * FROM department", function(err, results) {
+        inquirer.prompt ([
+            {
+                type: "rawlist",
+                name: "utilisedBudget",
+                message: "Which department do you want to view?", 
+                choices: results.map(departmentDetails => ({value: departmentDetails.id, name: departmentDetails.name})),
+            }
+        ]).then(response => {
+            connection.query(`SELECT SUM(role.salary), department.name as department_name FROM employee INNER JOIN role ON employee.role_id = role.id INNER JOIN department ON department.id = role.department_id WHERE department.id = ('${response.utilisedBudget}') GROUP BY department.name`, function(err, results) {
+                console.table(results)
+                start();
+            });
+        })
+    })
+}
+        
+
 
 

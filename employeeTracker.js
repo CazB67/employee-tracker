@@ -149,23 +149,6 @@ function addEmployee() {
     })
 }
 
-function removeEmployee() {
-    connection.query("SELECT * FROM employee", function(err, results) {
-        inquirer.prompt ([
-            {
-                type: "rawlist",
-                name: "id",
-                message: "Which employee do you want to remove?", 
-                choices: results.map(employeeDetails => ({value: employeeDetails.id, name: employeeDetails.first_name + " " + employeeDetails.last_name})),
-            }
-        ]).then(response => {
-            connection.query(`DELETE FROM employee where id = ('${response.id}')`, function(err, results) {
-                    start();
-            });
-        })
-    })
-}
-
 function viewEmployees() {
     connection.query("SELECT employee.id, employee.first_name, employee.last_name, role.title as role_title, role.salary, department.name as department_name, employee.manager_id,  concat(B.first_name, \" \", B.last_name) as manager_name FROM employee INNER JOIN role ON employee.role_id = role.id INNER JOIN department ON department.id = role.department_id LEFT JOIN employee B on employee.manager_id = B.id", function(err, results) {
         console.table(results);
@@ -211,10 +194,42 @@ function updateEmployeeRole() {
             });
             })
         })
-})
+    })
 }
 
+function removeEmployee() {
+    connection.query("SELECT * FROM employee", function(err, results) {
+        inquirer.prompt ([
+            {
+                type: "rawlist",
+                name: "remove",
+                message: "Which employee do you want to remove?", 
+                choices: results.map(employeeDetails => ({value: employeeDetails.id, name: employeeDetails.first_name + " " + employeeDetails.last_name})),
+            }
+        ]).then(response => {
+            connection.query(`DELETE FROM employee where id = ('${response.remove}')`, function(err, results) {
+                    start();
+            });
+        })
+    })
+}
 
+function removeDepartment() {
+    connection.query("SELECT * FROM department", function(err, results) {
+        inquirer.prompt ([
+            {
+                type: "rawlist",
+                name: "remove",
+                message: "Which department do you want to remove?", 
+                choices: results.map(departmentDetails => ({value: departmentDetails.id, name: departmentDetails.name})),
+            }
+        ]).then(response => {
+            connection.query(`DELETE FROM department where id = ('${response.remove}')`, function(err, results) {
+                    start();
+            });
+        })
+    })
+}
 
 
 

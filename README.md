@@ -24,6 +24,7 @@ The task was to create a Content Management System that would allow non-develope
 
 ## Usage
 The URL of the git hub repository is https://github.com/CazB67/note-taker
+
 To run the interface from the terminal type 
 
 `node employee_Tracker.js`

@@ -23,7 +23,7 @@ function start() {
             type: "list",
             name: "choice",
             message: "What would you like to do?",
-            choices: ['Add Employee', 'Add Department', 'Add Role', 'View all Employees', 'View Managers', 'View all Departments', 'View all Roles', 'Remove Employee', 'Remove Department', 'Remove Role', 'Update Employee Role', 'Update Employee Manager', 'View total utilised budget of a department', 'Exit'  ]
+            choices: ['Add Employee', 'Add Department', 'Add Role', 'View all Employees', 'View Employees by Manager', 'View all Departments', 'View all Roles', 'Remove Employee', 'Remove Department', 'Remove Role', 'Update Employee Role', 'Update Employee Manager', 'View total utilised budget of a department', 'Exit'  ]
         }
     ]).then(answer => {
         if (answer.choice === 'Add Employee') {
@@ -34,8 +34,8 @@ function start() {
             addRole();    
         }else if (answer.choice === 'View all Employees') {
             viewEmployees(); 
-        }else if (answer.choice === 'View Managers') {
-            viewManagers();  
+        }else if (answer.choice === 'View Employees by Manager') {
+            viewEmployeesByManager();  
         }else if (answer.choice === 'View all Departments') {
             viewDepartments();   
         }else if (answer.choice === 'View all Roles') {
@@ -162,12 +162,23 @@ function viewEmployees() {
     })
 }
 
-function viewManagers() {
+//work in progress
+function viewEmployeesByManager() {
     connection.query("SELECT employee.id, employee.first_name, employee.last_name FROM employee WHERE id IN (SELECT manager_id FROM employee where manager_id is not null)", function(err, results) {
-        console.table(results);
-        start();
+        inquirer.prompt ([
+            {
+                type: "rawlist",
+                name: "manager",
+                message: "Which manager's employees do you want to view?", 
+                choices: results.map(managerDetails => ({value: managerDetails.id, name: managerDetails.first_name + " " + managerDetails.last_name})),
+            }
+        ]).then(response => {
+                console.log(response);
+                    start();
+                });
     })
 }
+
 
 function viewDepartments() {
     connection.query("SELECT * FROM department", function(err, results) {

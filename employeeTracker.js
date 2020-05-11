@@ -23,7 +23,7 @@ function start() {
             type: "list",
             name: "choice",
             message: "What would you like to do?",
-            choices: ['Add Employee', 'Add Department', 'Add Role', 'View all Employees', 'View all Departments', 'View all Roles', 'Remove Employee', 'Remove Department', 'Remove Role', 'Update Employee Role', 'Update Employee Manager', 'View total utilised budget of a department'  ]
+            choices: ['Add Employee', 'Add Department', 'Add Role', 'View all Employees', 'View all Departments', 'View all Roles', 'Remove Employee', 'Remove Department', 'Remove Role', 'Update Employee Role', 'Update Employee Manager', 'View total utilised budget of a department', 'Exit'  ]
         }
     ]).then(answer => {
         if (answer.choice === 'Add Employee') {
@@ -50,6 +50,8 @@ function start() {
             updateEmployeeManager();   
         }else if (answer.choice === 'View total utilised budget of a department') {
             viewDepartmentBudget();   
+        }else{
+            connection.end();
         }
     })
 }
@@ -283,7 +285,7 @@ function viewDepartmentBudget() {
                 choices: results.map(departmentDetails => ({value: departmentDetails.id, name: departmentDetails.name})),
             }
         ]).then(response => {
-            connection.query(`SELECT SUM(role.salary), department.name as department_name FROM employee INNER JOIN role ON employee.role_id = role.id INNER JOIN department ON department.id = role.department_id WHERE department.id = ('${response.utilisedBudget}') GROUP BY department.name`, function(err, results) {
+            connection.query(`SELECT SUM(role.salary) as total_utilised_department_budget, department.name as department_name FROM employee INNER JOIN role ON employee.role_id = role.id INNER JOIN department ON department.id = role.department_id WHERE department.id = ('${response.utilisedBudget}') GROUP BY department.name`, function(err, results) {
                 console.table(results)
                 start();
             });

@@ -23,7 +23,7 @@ function start() {
             type: "list",
             name: "choice",
             message: "What would you like to do?",
-            choices: ['Add Employee', 'Add Department', 'Add Role', 'View all Employees', 'View all Departments', 'View all Roles', 'Remove Employee', 'Remove Department', 'Remove Role', 'Update Employee Role', 'Update Employee Manager', 'View total utilised budget of a department', 'Exit'  ]
+            choices: ['Add Employee', 'Add Department', 'Add Role', 'View all Employees', 'View Managers', 'View all Departments', 'View all Roles', 'Remove Employee', 'Remove Department', 'Remove Role', 'Update Employee Role', 'Update Employee Manager', 'View total utilised budget of a department', 'Exit'  ]
         }
     ]).then(answer => {
         if (answer.choice === 'Add Employee') {
@@ -34,6 +34,8 @@ function start() {
             addRole();    
         }else if (answer.choice === 'View all Employees') {
             viewEmployees(); 
+        }else if (answer.choice === 'View Managers') {
+            viewManagers();  
         }else if (answer.choice === 'View all Departments') {
             viewDepartments();   
         }else if (answer.choice === 'View all Roles') {
@@ -155,6 +157,13 @@ function addEmployee() {
 
 function viewEmployees() {
     connection.query("SELECT employee.id, employee.first_name, employee.last_name, role.title as role_title, role.salary, department.name as department_name, employee.manager_id,  concat(B.first_name, \" \", B.last_name) as manager_name FROM employee INNER JOIN role ON employee.role_id = role.id INNER JOIN department ON department.id = role.department_id LEFT JOIN employee B on employee.manager_id = B.id", function(err, results) {
+        console.table(results);
+        start();
+    })
+}
+
+function viewManagers() {
+    connection.query("SELECT employee.id, employee.first_name, employee.last_name FROM employee WHERE id IN (SELECT manager_id FROM employee where manager_id is not null)", function(err, results) {
         console.table(results);
         start();
     })

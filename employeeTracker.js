@@ -96,7 +96,7 @@ function addRole(){
                     start();
                 });
         })
-     })
+    })
 }
 
 function addEmployee() {

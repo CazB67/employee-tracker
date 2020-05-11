@@ -173,10 +173,12 @@ function viewEmployeesByManager() {
                 choices: results.map(managerDetails => ({value: managerDetails.id, name: managerDetails.first_name + " " + managerDetails.last_name})),
             }
         ]).then(response => {
-                console.log(response);
+            connection.query(`SELECT * FROM employee WHERE manager_id = ('${response.manager}')`, function(err, results) {
+                    console.table(results);
                     start();
                 });
     })
+})
 }
 
 

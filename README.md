@@ -20,7 +20,7 @@ The task was to create a Content Management System that would allow non-develope
 2. Connect to the database from node.
 3. Create an inquirer function that provides a list of options of tasks that can be carried out.
 4. Create separate functions to carry out each of the tasks listed.
-5. Testing functionality and cleaning code throughout.
+5. Test functionality and clean up code throughout.
 
 ## Usage
 The URL of the git hub repository is https://github.com/CazB67/employee-tracker

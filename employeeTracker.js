@@ -10,13 +10,14 @@ const connection = mysql.createConnection({
     database: 'employee_tracker_db'
 })
 
-// connect to the mysql server and sql database
+//Connect to the mysql server and sql database
 connection.connect(function(err) {
     if (err) throw err;
     // run the start function after the connection is made to prompt the user
     start();
   });
 
+//Main menu called after every choice except 'exit'
 function start() {
     inquirer.prompt ([
         {
@@ -168,7 +169,6 @@ function viewEmployees() {
     })
 }
 
-//work in progress
 function viewEmployeesByManager() {
     connection.query("SELECT employee.id, employee.first_name, employee.last_name FROM employee WHERE id IN (SELECT manager_id FROM employee where manager_id is not null)", function(err, results) {
         inquirer.prompt ([

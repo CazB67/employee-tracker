@@ -31,3 +31,12 @@ CREATE TABLE employee(
         REFERENCES role (id)
         ON DELETE CASCADE
 );
+
+INSERT INTO department(name) 
+VALUES ("Legal");
+
+INSERT INTO department(name) 
+VALUES ("Finance");
+
+INSERT INTO department(name) 
+VALUES ("Management");

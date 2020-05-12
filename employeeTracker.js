@@ -68,6 +68,7 @@ function addDepartment() {
     ]).then(response => {
         connection.query(`INSERT INTO department (name) VALUES ("${response.departmentName}")`, 
             function (err, res){
+                if (err) throw err;
                 start();
             });
     }) 
@@ -95,6 +96,7 @@ function addRole(){
         ]).then(response => {
             connection.query(`INSERT INTO role (title, salary, department_id) VALUES ("${response.title}", "${response.salary}", "${response.departmentId}")`, 
                 function (err, res){
+                    if (err) throw err;
                     start();
                 });
         })
@@ -104,6 +106,7 @@ function addRole(){
 function addEmployee() {
     let employees;
     connection.query("SELECT * FROM employee", function(err, results) {
+        if (err) throw err;
         employees = results;
     })
     connection.query('SELECT * FROM role', function (error, results, fields){
@@ -143,20 +146,23 @@ function addEmployee() {
         if(response.queryManager === "No"){
             connection.query(`INSERT INTO employee (first_name, last_name, role_id) VALUES ("${response.firstName}", "${response.lastName}", "${response.role}")`, 
             function (err, res){
+                if (err) throw err;
                 start();
             });
         }else{
             connection.query(`INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES ("${response.firstName}", "${response.lastName}", "${response.role}", "${response.manager}")`, 
             function (err, res){
+                if (err) throw err;
                 start();
             });
         }
-        }) 
-    })
+    }) 
+})
 }
 
 function viewEmployees() {
     connection.query("SELECT employee.id, employee.first_name, employee.last_name, role.title as role_title, role.salary, department.name as department_name, employee.manager_id,  concat(B.first_name, \" \", B.last_name) as manager_name FROM employee INNER JOIN role ON employee.role_id = role.id INNER JOIN department ON department.id = role.department_id LEFT JOIN employee B on employee.manager_id = B.id", function(err, results) {
+        if (err) throw err;
         console.table(results);
         start();
     })
@@ -174,6 +180,7 @@ function viewEmployeesByManager() {
             }
         ]).then(response => {
             connection.query(`SELECT * FROM employee WHERE manager_id = ('${response.manager}')`, function(err, results) {
+                    if (err) throw err;
                     console.table(results);
                     start();
                 });
@@ -181,9 +188,9 @@ function viewEmployeesByManager() {
 })
 }
 
-
 function viewDepartments() {
-    connection.query("SELECT * FROM department", function(err, results) {
+    connection.query("SELECT department.id, department.name as department_name FROM department", function(err, results) {
+        if (err) throw err;
         console.table(results);
         start();
     })
@@ -191,6 +198,7 @@ function viewDepartments() {
 
 function viewRoles() {
     connection.query("SELECT * FROM role", function(err, results) {
+        if (err) throw err;
         console.table(results);
         start();
     })
@@ -216,7 +224,8 @@ function updateEmployeeRole() {
             }
         ]).then(response => {
             connection.query(`UPDATE employee SET employee.role_id = ('${response.newRole}') where employee.id = ('${response.selectEmployee}')`, function(err, results) {
-                    start();
+                if (err) throw err;
+                start();
             });
             })
         })
@@ -240,6 +249,7 @@ function updateEmployeeManager() {
             }
         ]).then(response => {
             connection.query(`UPDATE employee SET employee.manager_id = ('${response.newManager}') where employee.id = ('${response.selectEmployee}')`, function(err, results) {
+                    if (err) throw err;
                     start();
             });
             })
@@ -257,7 +267,8 @@ function removeEmployee() {
             }
         ]).then(response => {
             connection.query(`DELETE FROM employee where id = ('${response.remove}')`, function(err, results) {
-                    start();
+                if (err) throw err;
+                start();
             });
         })
     })
@@ -274,7 +285,8 @@ function removeDepartment() {
             }
         ]).then(response => {
             connection.query(`DELETE FROM department where id = ('${response.remove}')`, function(err, results) {
-                    start();
+                if (err) throw err;
+                start();
             });
         })
     })
@@ -291,7 +303,8 @@ function removeRole() {
             }
         ]).then(response => {
             connection.query(`DELETE FROM role where id = ('${response.remove}')`, function(err, results) {
-                    start();
+                if (err) throw err;
+                start();
             });
         })
     })
@@ -308,6 +321,7 @@ function viewDepartmentBudget() {
             }
         ]).then(response => {
             connection.query(`SELECT SUM(role.salary) as total_utilised_department_budget, department.name as department_name FROM employee INNER JOIN role ON employee.role_id = role.id INNER JOIN department ON department.id = role.department_id WHERE department.id = ('${response.utilisedBudget}') GROUP BY department.name`, function(err, results) {
+                if (err) throw err;
                 console.table(results)
                 start();
             });

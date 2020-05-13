@@ -4,7 +4,7 @@ Using Node, Inquirer, and MySQL.
 ## Description 
 ![Last Commit](https://img.shields.io/github/last-commit/cazb67/employee-tracker) ![Top Language](https://img.shields.io/github/languages/top/cazb67/employee-tracker)
 
-The task was to create a Content Management System that would allow non-developers to view and interact with information stored in a database. Using node, inquirer and MySql a solution for managing a company's employees was built.
+A Content Management System that would allow non-developers to view and interact with information stored in a database was created. Using node, inquirer and MySql a solution for managing a company's employees was built. The user is able to do the following; add an employee, add a department, 'add a role', view all employees, view employees by manager, view all departments, view all roles, remove an employee, remove a department, remove a role', 'update an employee role, update an employee's manager' and view total utilised budget of a department.
 
 
 ## Table of Contents
@@ -16,7 +16,7 @@ The task was to create a Content Management System that would allow non-develope
 6. [Licence](#License)
 
 ## Installation
-1. Create a seed.sql file to pre-populate database.
+1. Create a database and seed.sql file to pre-populate database.
 2. Connect to the database from node.
 3. Create an inquirer function that provides a list of options of tasks that can be carried out.
 4. Create separate functions to carry out each of the tasks listed.

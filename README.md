@@ -29,6 +29,7 @@ To run the interface from the terminal type
 
 `node employeeTracker.js`
 
+Make sure you add a department first, a role second and then add your employees. You can not add employees if you do not have roles and departments to put them into.
 
 The following GIF shows the application's functionality and how to use. 
 

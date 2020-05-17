@@ -1,5 +1,5 @@
 # Employee Tracker
-Using Node, Inquirer, and MySQL.
+A Content Management System using Node, Inquirer, and MySQL, that allows non-developers to view and interact with information stored in a database.
 
 ## Description 
 ![Last Commit](https://img.shields.io/github/last-commit/cazb67/employee-tracker) ![Top Language](https://img.shields.io/github/languages/top/cazb67/employee-tracker)
